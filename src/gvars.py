@@ -56,7 +56,7 @@ DAYS_WEEK = [SATURDAY, SUNDAY]
 
 # URLS
 # endpoint homologacao ANBIMA
-HMG_ANBIMA = "https://privateservices-stg.vortx.com.br/vxferiados/api/Holiday/GetInRange?InitialDate=2024-04-01&FinalDate=2024-05-30"
+HMG_ANBIMA = "https://privateservices-stg.vortx.com.br/vxferiados/api/Holiday/GetInRange?"
 PRD_ANBIMA = ""
 
 MESES = [
@@ -98,12 +98,14 @@ HOJE = int(pieces.date.today().strftime('%d') )
 
 # CONF EMAIL
 EMAIL_SMTP = "email-ssl.com.br"
-EMAIL_USER = ""
+EMAIL_USER = "marcelo.duarte@cadmus.com.br"
 EMAIL_PASS = ""
 EMAIL_PORT = 587
-EMAIL_INTERNO = "marcelo.duarte@cadmus.com.br,vinicius.cortez@cadmus.com.br"
-EMAIL_CLIENT = "fsh@vortx.com.br"
+#EMAIL_INTERNO = "marcelo.duarte@cadmus.com.br,vinicius.cortez@cadmus.com.br"
+#EMAIL_CLIENT = "fsh@vortx.com.br"
+EMAIL_CLIENT = "marcelo.duarte@cadmus.com.br"
 EMAIL_SUPPORT = "marcelo.duarte@cadmus.com.br"
+EMAIL_INTERNO = "marcelo.duarte@cadmus.com.br"
 
 
 

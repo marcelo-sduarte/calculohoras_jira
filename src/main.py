@@ -14,11 +14,13 @@ def start_process():
     # Exclui todos files temporarios
     pieces.lib_process.remove_files_in_folder(PATH_OUTPUT)     
     # recupera os feriados
-    feriados = pieces.lib_calendar.get_feriados_api(ano=ano, mes=mes)
-    dias_uteis = pieces.lib_calendar.get_dias_uteis(ano=ano, mes=mes, feriados=feriados)
-    #funcao para tabela modelo
-    result = pieces.lib_spreadsheet.create_plan_modelo(dias_uteis=dias_uteis,mes=mes,ano=ano)  
-    print(result)  
+    result = pieces.lib_calendar.get_feriados_api(ano=ano, mes=mes)
+
+    if not result[0]:
+        dias_uteis = pieces.lib_calendar.get_dias_uteis(ano=ano, mes=mes, feriados=result[1])
+        #funcao para tabela modelo
+        result = pieces.lib_spreadsheet.create_plan_modelo(dias_uteis=dias_uteis,mes=mes,ano=ano)  
+    
     #envia email com planilha em anexo
     envio_report_email(result[0],result[1])
     pieces.lib_logging.logger.info(f'[FIM] -> start_process : {PROCESS_NAME} ----  {title} ----')
@@ -52,6 +54,7 @@ def envio_report_email(status, mensagem_execucao):
                                         nameFile= FILE_OUTPUT_JIRA,
                                         output_path= PATH_REPORT,
                                     Subject= "[SUCESSO] Homologação - Teste envio relatorio Vortx")
+        pieces.lib_logging.logger.info(f'-> envio_report_email, modo PRD: {PRD} com status falha: {status}')
     except Exception as error:
         pieces.lib_logging.logger.error(f' -> envio_report_email, message: {error}')
     finally:
