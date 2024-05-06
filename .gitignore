@@ -1,0 +1,14 @@
+env/
+.env
+.vscode
+__pychache__/
+src/teste.py
+*.pyc
+*zip
+*rar
+input/Aniversario_Liga_Agil.docx
+input/Aniversario_Cadmus.docx
+*.xlsx
+*.pdf
+*.log
+src/libs/teste*
