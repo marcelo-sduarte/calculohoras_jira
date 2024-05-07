@@ -3,21 +3,17 @@ from gvars import *
 def send_email(EmailTo, Subject,Body,Co=None,output_path=None, nameFile=None):
     try:
         pieces.lib_logging.logger.info("[INICIO] send_email()")
-
+        #get credentials
+        username, password = pieces.lib_process.get_credential(target_name=EMAIL_TARGET)
+        #username  = "marcelo.duarte@cadmus.com.br"
+        #password = "MA@msd42"
         # Configurações do email
-        receiver_email = EmailTo
         subject = Subject
         # Criar objeto MIMEMultipart
         msg = pieces.MIMEMultipart()
-        # Dividir a string em uma lista de emails
-        #receiver_email = EmailTo.split(';')
-        # Adicionar as partes do email (texto e anexo)
-        msg['From'] = EMAIL_USER
-        #if len(receiver_email) > 1:
-        msg['To'] = EmailTo  # Concatena os endereços separados por vírgula  
+        msg['From'] = username
+        msg['To'] = EmailTo  
         msg['Co'] = Co
-        #else:
-        #msg['To'] = receiver_email[0]
         msg['Subject'] = subject
         # Corpo do email (texto)
         msg.attach(pieces.MIMEText(Body, 'plain'))
@@ -30,16 +26,16 @@ def send_email(EmailTo, Subject,Body,Co=None,output_path=None, nameFile=None):
             part.add_header('Content-Disposition', f'attachment; filename={nameFile}')
             msg.attach(part)
 
-        # Enviar o email
         # Conectar ao servidor SMTP
         servidor = pieces.smtplib.SMTP(EMAIL_SMTP, EMAIL_PORT)
         servidor.starttls()
-        servidor.login(EMAIL_USER, EMAIL_PASS)
-
+        #Autentica
+        servidor.login(str(username), str(password))
         # Enviar a mensagem
         servidor.send_message(msg)
-        print('Email enviado com sucesso!')
+        print('Email enviado com sucesso!')  
     except Exception as error:
         pieces.lib_logging.logger.info(f"> send_email error message: {error}")
+    
     finally:
         pieces.lib_logging.logger.info("[FIM] send_email()")

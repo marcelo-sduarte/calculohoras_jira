@@ -96,16 +96,22 @@ ANO_ATUAL = ano
 # HOJE int formato dd
 HOJE = int(pieces.date.today().strftime('%d') )
 
+# CREDENTIAL TARGET
+EMAIL_TARGET = "email_cadmus"
+
 # CONF EMAIL
 EMAIL_SMTP = "email-ssl.com.br"
-EMAIL_USER = "marcelo.duarte@cadmus.com.br"
-EMAIL_PASS = ""
 EMAIL_PORT = 587
 #EMAIL_INTERNO = "marcelo.duarte@cadmus.com.br,vinicius.cortez@cadmus.com.br"
 #EMAIL_CLIENT = "fsh@vortx.com.br"
 EMAIL_CLIENT = "marcelo.duarte@cadmus.com.br"
 EMAIL_SUPPORT = "marcelo.duarte@cadmus.com.br"
 EMAIL_INTERNO = "marcelo.duarte@cadmus.com.br"
+
+#JIRA
+JIRA_SERVER = 'https://sua_empresa.atlassian.net'
+JIRA_USER = 'seu_usuario'
+JIRA_API_TOKEN = 'seu_token_de_api'
 
 
 

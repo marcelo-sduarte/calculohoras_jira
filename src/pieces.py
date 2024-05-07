@@ -10,10 +10,11 @@ from email.mime.base import MIMEBase
 from email import encoders
 import glob
 import json
+from jira import JIRA
 import logging, os
 import locale
 import libs
-from libs import lib_logging,lib_spreadsheet, lib_json, lib_process, lib_anbima, lib_calendar,lib_email
+from libs import lib_logging,lib_spreadsheet, lib_json, lib_process, lib_calendar,lib_email
 import numpy as np
 import math
 import pandas as pd
@@ -26,6 +27,7 @@ import smtplib
 import traceback
 import time
 from typing import Union
+import win32cred
 from unidecode import unidecode 
 import unicodedata
 
