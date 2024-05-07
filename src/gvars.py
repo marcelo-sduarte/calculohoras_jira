@@ -109,9 +109,10 @@ EMAIL_SUPPORT = "marcelo.duarte@cadmus.com.br"
 EMAIL_INTERNO = "marcelo.duarte@cadmus.com.br"
 
 #JIRA
-JIRA_SERVER = 'https://sua_empresa.atlassian.net'
+JIRA_SERVER = 'https://vortxtech.atlassian.net'
 JIRA_USER = 'seu_usuario'
 JIRA_API_TOKEN = 'seu_token_de_api'
+JIRA_QUERY = 'project in (BANK, COR, CS, FBACK, FIDC, FLIQ, INV, "Fundos Backoffice Cadmus", Escrituracao) and issuetype in ("Automação", "Debito Tecnico", Story) and resolutiondate >= startOfMonth(-1)  and resolutiondate < startOfMonth() and status = Done'
 
 
 

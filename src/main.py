@@ -3,27 +3,30 @@ from gvars import *
 
     
 def start_process():
-    
-    pieces.lib_logging.logger.info(f'[INICIO] ->start_process: {PROCESS_NAME} ----  {title} ----')  
-    
-    # ==================== CHAMA OS PROCESSOS PRINCIPAIS ==================== #
-    #recupera mes e ano anterior~
-    mes, ano = pieces.lib_calendar.get_mes_ano_anterior()
-    # limpando dados temp
-    pieces.lib_process.remove_files_in_folder(PATH_FILES)
-    # Exclui todos files temporarios
-    pieces.lib_process.remove_files_in_folder(PATH_OUTPUT)     
-    # recupera os feriados
-    result = pieces.lib_calendar.get_feriados_api(ano=ano, mes=mes)
+    try: 
+        pieces.lib_logging.logger.info(f'[INICIO] ->start_process: {PROCESS_NAME} ----  {title} ----')          
+        # ==================== CHAMA OS PROCESSOS PRINCIPAIS ==================== #
+        #recupera mes e ano anterior
+        mes, ano = pieces.lib_calendar.get_mes_ano_anterior()
+        # limpando dados temp
+        pieces.lib_process.remove_files_in_folder(PATH_FILES)
+        # Exclui todos files temporarios
+        pieces.lib_process.remove_files_in_folder(PATH_OUTPUT)     
+        # recupera os feriados
+        result = pieces.lib_calendar.get_feriados_api(ano=ano, mes=mes)
 
-    if not result[0]:
-        dias_uteis = pieces.lib_calendar.get_dias_uteis(ano=ano, mes=mes, feriados=result[1])
-        #funcao para tabela modelo
-        result = pieces.lib_spreadsheet.create_plan_modelo(dias_uteis=dias_uteis,mes=mes,ano=ano)  
-    
-    #envia email com planilha em anexo
-    envio_report_email(result[0],result[1])
-    pieces.lib_logging.logger.info(f'[FIM] -> start_process : {PROCESS_NAME} ----  {title} ----')
+        if not result[0]:
+            dias_uteis = pieces.lib_calendar.get_dias_uteis(ano=ano, mes=mes, feriados=result[1])
+            #funcao para tabela modelo
+            result = pieces.lib_spreadsheet.create_plan_modelo(dias_uteis=dias_uteis,mes=mes,ano=ano)          
+    except Exception as error:
+        pieces.lib_logging.logger.error(f'>> start_process error message: ',error)  
+        result[0] = True
+        result[1] = error
+    finally:
+        #envia email com planilha em anexo
+        envio_report_email(result[0],result[1])
+        pieces.lib_logging.logger.info(f'[FIM] -> start_process : {PROCESS_NAME} ----  {title} ----')
 
 def envio_report_email(status, mensagem_execucao):
     try:

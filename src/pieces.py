@@ -11,6 +11,7 @@ from email import encoders
 import glob
 import json
 from jira import JIRA
+from jira.resources import Issue
 import logging, os
 import locale
 import libs
