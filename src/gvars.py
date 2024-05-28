@@ -15,7 +15,7 @@ else:
 today = pieces.date.today().strftime('%d-%m-%y') 
 
 # paths
-PATH_PROCESS_FOLDER = r"C:\Users\SMARTLAP\Documents\Python\Automation"+ pieces.os.sep + PROCESS_NAME
+PATH_PROCESS_FOLDER = r"C:\Users\Marcelo\Documents\Python\Automation"+ pieces.os.sep + PROCESS_NAME
 PATH_OUTPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "output"
 PATH_INPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "input"
 PATH_LOGS = PATH_OUTPUT + pieces.os.sep +"logs"
