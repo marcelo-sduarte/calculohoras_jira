@@ -44,8 +44,7 @@ def envio_report_email(status, mensagem_execucao):
             else:
                 pieces.lib_email.send_email(EmailTo = EMAIL_CLIENT,
                                             Co = EMAIL_INTERNO,
-                                        Body= """Processo de calculos de horas, processou com sucesso, verificar file em anexo.
-                                          Verificar a colaboradora THAIANA DA SILVA LOPES estava com ferias do dia 23 a 30 mais saldo permaneceu 176 ao inves 128
+                                        Body= """Processo de calculos de horas, processou com sucesso, verificar file em anexo.   
                                         """,
                                         nameFile= FILE_OUTPUT_JIRA,
                                         output_path= PATH_REPORT,

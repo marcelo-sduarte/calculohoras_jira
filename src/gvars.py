@@ -15,7 +15,7 @@ else:
 today = pieces.date.today().strftime('%d-%m-%y') 
 
 # paths
-PATH_PROCESS_FOLDER = r"C:\Users\Marcelo\Documents\Python\Automation"+ pieces.os.sep + PROCESS_NAME
+PATH_PROCESS_FOLDER = r"C:\Users\marce\Documents\Python\Automation"+ pieces.os.sep + PROCESS_NAME
 PATH_OUTPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "output"
 PATH_INPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "input"
 PATH_LOGS = PATH_OUTPUT + pieces.os.sep +"logs"
@@ -30,13 +30,15 @@ PATH_REPORT = pieces.os.path.join(PATH_FILES, FILE_OUTPUT_JIRA)
 FILENAME = PATH_LOGS + pieces.os.sep + f"output-{today}.log"
 
 # PATH E COLUNAS INPUT FILE XLSX JIRA
-PATH_EXCEL_2 = PATH_INPUT + pieces.os.sep + "jira-abril-2024.xlsx"
-SHEET_2 = "Your Jira Issues"
+PATH_EXCEL_2 = PATH_INPUT + pieces.os.sep + "jira-2024-05.xlsx"
+
+SHEET_2 = "Sheet1"
 COLUNA_PROJETO = 'Project'
 COLUNA_WORK_ITEM = 'Summary'
+COLUNA_KEY = 'Key'
 
 # COLUNAS INPUT FILE XLSX FUNCIONARIOS
-PATH_EXCEL_3 = PATH_INPUT + pieces.os.sep + "BookAbr.xlsx"
+PATH_EXCEL_3 = PATH_INPUT + pieces.os.sep + "BookMai.xlsx"
 COLUNA_SQUAD = 'Squad'
 COLUNA_PROJETO_FUNC = 'Projeto'
 COLUNA_NOME_FUNC = 'Nome'

@@ -12,11 +12,19 @@ def connect_api_jira(ano, mes):
         ultimo_dia = pieces.datetime.datetime(ano, mes, pieces.calendar.monthrange(ano, mes)[1]).strftime("%Y-%m-%d") 
 
         # Define a query JQL
+        '''
         query = ('project in (BANK, COR, CS, FBACK, FIDC, FLIQ, INV, "Fundos Backoffice Cadmus", Escrituracao) '
                 'and issuetype in ("Automação", "Debito Tecnico", Story) '
                 'and resolutiondate >= "{}" '
                 'and resolutiondate <= "{}" '
                 'and status = Done').format(primeiro_dia, ultimo_dia)
+        
+        '''
+        query = ('project in ("Fundos 175 - Cadmus" , "Fundos BackOffice - Cadmus" , Boletador , "Fundos Liquidos" , FID2, Tech-Descentralizada, Investor , "Corporate Back" , "Corporate Front" , Plataformas , BAAS ) '
+                 'and issuetype in ( "Debito Tecnico", Story) '
+                 'and resolutiondate >= startOfMonth(-1) and '
+                 'resolutiondate < startOfMonth() and status = Done')
+        
         # Faz a consulta ao Jira   
         issues = jira.search_issues(query)
         # Extrai os dados relevantes das issues

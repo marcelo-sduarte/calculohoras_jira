@@ -81,24 +81,28 @@ def insert_rows_dataframe(dataframe,row_df_modelo,add_total_item,work_itens,tota
         pieces.lib_logging.logger.info(f"[INICIO]insert_rows_dataframe()")
         linha_add = 0
         row_data = 0 
-        saldo = 0                                                       
+        saldo = 0 
+
         for i in range(int(add_total_item)):   
             # Associa horas
             horas = horas_por_work_itens[row_horas]
+            lista_horas = horas_por_work_itens
             #verificar data ferias
             if ferias:
                 dias_uteis_mes = pieces.lib_calendar.dias_fora_do_intervalo_ferias(dia_inicial= int(inicio_ferias), dia_final= int(fim_ferias),lista_dias_uteis= dias_uteis) 
             else:
                 dias_uteis_mes = dias_uteis
             # pegar data inicio e fim
-            dt_inicio, dt_fim, row_data,saldo_horas, add_horas = pieces.lib_calendar.get_data_inicio_fim(dias_uteis=dias_uteis_mes, row=row_data, horas=horas, mes=mes, ano=ano, saldo=saldo)          
+            dt_inicio, dt_fim, row_data,saldo_horas, add_horas, saldo = pieces.lib_calendar.get_data_inicio_fim(list_horas = horas_por_work_itens,dias_uteis=dias_uteis_mes, row=row_data, horas=horas, mes=mes, ano=ano, saldo=saldo)          
             # guarda saldo se houver
             saldo = saldo + saldo_horas
             # ajuste horas 
             if add_horas:
                 horas = horas + saldo_horas
-            elif saldo > 0:
+            elif saldo > 0 and saldo < horas:
                 horas = horas - saldo_horas
+            elif saldo > 0 and saldo <= horas:
+                horas = saldo
             # incremento de linhas
             row_data += 1
             #  sorteia um work item para inserir na row datagrame modelo
@@ -107,9 +111,9 @@ def insert_rows_dataframe(dataframe,row_df_modelo,add_total_item,work_itens,tota
                 tentativa += 1               
                 work_item = work_itens.sample(n=1).values[0]
                 #remover acentos
-                work_sem_acento = pieces.lib_process.remover_acentos(work_item)
-                if str(work_sem_acento) not in random_itens:
-                    random_itens.append(work_sem_acento)                            
+                #work_sem_acento = pieces.lib_process.remover_acentos(work_item)
+                if str(work_item[0]) not in random_itens:
+                    random_itens.append(work_item[0])                            
                     break 
                 if total_work_item == tentativa:
                         random_itens = []       
@@ -117,7 +121,7 @@ def insert_rows_dataframe(dataframe,row_df_modelo,add_total_item,work_itens,tota
             dataframe.loc[row_df_modelo] = {
                 'Squad': squad, 
                 'Projeto': projeto, 
-                'Título': work_sem_acento, 
+                'Título': work_item[1], 
                 'Função': funcao, 
                 'Nome': nome,
                 'Inicio': dt_inicio ,
@@ -241,7 +245,7 @@ def create_plan_modelo(dias_uteis,mes,ano):
         #recupera dados do excel JIRA
         df_jira_geral = pieces.pd.read_excel(PATH_EXCEL_2, sheet_name=SHEET_2)
         #selecionando somente duas colunas do Jira
-        colunas_selecionadas = [f'{COLUNA_WORK_ITEM}', f'{COLUNA_PROJETO}']
+        colunas_selecionadas = [f'{COLUNA_KEY}',f'{COLUNA_WORK_ITEM}', f'{COLUNA_PROJETO}']
         df_jira = df_jira_geral[colunas_selecionadas]
         #recupera dados do excel com horas, projeto e funcionarios
         df_funcionarios = pieces.pd.read_excel(PATH_EXCEL_3, sheet_name=SHEET_3)
@@ -262,9 +266,10 @@ def create_plan_modelo(dias_uteis,mes,ano):
             work_filter = df_jira[(df_jira[f'{COLUNA_PROJETO}'] == projeto)]
             #totalizar itens
             total_work_item = work_filter[f'{COLUNA_WORK_ITEM}'].count()
-            try:                                
-                #work_itens = work_filter['Resumo']
-                work_itens = work_filter[f'{COLUNA_WORK_ITEM}']                                                
+            try:                                                
+                #work_itens = work_filter[f'{COLUNA_WORK_ITEM}']
+                #work_itens = work_filter[f'{COLUNA_KEY}']                                                
+                #work_filter[f'{COLUNA_KEY}']  
                 if work_filter.empty:
                     pieces.lib_logging.logger.error(f"> Ver projeto: {projeto} esta divergente entre Jira e Base de Funcionários")
                     continue
@@ -284,6 +289,9 @@ def create_plan_modelo(dias_uteis,mes,ano):
                 squad = row[f'{COLUNA_SQUAD}']
                 dt_inicio_ferias = row[f'{COLUNA_INICIO}']
                 dt_fim_ferias = row[f'{COLUNA_FIM}']  
+                if nome == "MAIK BRAGA MOURA":
+                    print("achou")
+
                 # valida ferias
                 if not pieces.pd.isnull(dt_inicio_ferias) and not pieces.pd.isnull(horas):
                     ferias = True
@@ -359,7 +367,7 @@ def create_plan_modelo(dias_uteis,mes,ano):
                 row_df_modelo = insert_rows_dataframe(dataframe=df_modelo,
                                     row_df_modelo=row_df_modelo,
                                     add_total_item=add_total_item,
-                                    work_itens=work_itens,
+                                    work_itens=work_filter,
                                     total_work_item=total_work_item,
                                     squad=squad,
                                     funcao=funcao,
