@@ -17,7 +17,7 @@ A Calculadora de Horas do Jira é um projeto em Python projetado para otimizar o
 Para usar a Calculadora de Horas do Jira, siga estes passos:
 
 1. Clone este repositório em sua máquina local:
-git clone http://10.10.15.53/sabia/vortx
+git clone https://github.com/mftechnology/calculohoras_jira
 Instale as dependências necessárias:
 
 2. Instale as bibliotecas necessárias:
