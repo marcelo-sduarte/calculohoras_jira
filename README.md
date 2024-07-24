@@ -16,21 +16,14 @@ A Calculadora de Horas do Jira é um projeto em Python projetado para otimizar o
 # Instalação
 Para usar a Calculadora de Horas do Jira, siga estes passos:
 
-1.Clone este repositório em sua máquina local:
-
-bash
-Copy code
+1. Clone este repositório em sua máquina local:
 git clone http://10.10.15.53/sabia/vortx
 Instale as dependências necessárias:
 
 2. Instale as bibliotecas necessárias:
-bash
-Copy code
 pip install -r requirements.txt
 
 3. Configure o repositorio virtual.
-bash
-Copy code
 python -m venv env
 
 4. Certifique que seus arquivos Excel contendo dados do Jira e informações dos funcionários estejam na pasta [input] e garantindo que sigam o formato especificado.
@@ -38,8 +31,6 @@ python -m venv env
 5. Use as funcao save_credential que consta na lib_process.py para salvar no cofre de senha do windows as senhas que serão utilizadas ou salve manualmente usando teclas Windows + R e digitando  “control.exe keymgr.dll”.
 
 6. Execute o script principal [src/main.py]:
-bash
-Copy code
 python main.py
 
 7. Revise file [gvars.py] e ajustes os diretorios que serão utilizados no projeto.
