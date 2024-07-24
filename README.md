@@ -35,14 +35,16 @@ python -m venv env
 
 4. Certifique que seus arquivos Excel contendo dados do Jira e informações dos funcionários estejam na pasta [input] e garantindo que sigam o formato especificado.
 
-5. Execute o script principal [src/main.py]:
+5. Use as funcao save_credential que consta na lib_process.py para salvar no cofre de senha do windows as senhas que serão utilizadas ou salve manualmente usando teclas Windows + R e digitando  “control.exe keymgr.dll”.
+
+6. Execute o script principal [src/main.py]:
 bash
 Copy code
 python main.py
 
-6. Revise file [gvars.py] e ajustes os diretorios que serão utilizados no projeto.
+7. Revise file [gvars.py] e ajustes os diretorios que serão utilizados no projeto.
 
-7. Todas as bibliotecas usadas no python constam no file [pieces.py]
+8. Todas as bibliotecas usadas no python constam no file [pieces.py]
 
 
 # Licença
