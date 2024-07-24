@@ -89,7 +89,7 @@ def insert_rows_dataframe(dataframe,row_df_modelo,add_total_item,work_itens,tota
             lista_horas = horas_por_work_itens
             #verificar data ferias
             if ferias:
-                dias_uteis_mes = pieces.lib_calendar.dias_fora_do_intervalo_ferias(dia_inicial= int(inicio_ferias), dia_final= int(fim_ferias),lista_dias_uteis= dias_uteis) 
+                dias_uteis_mes = pieces.lib_calendar.dias_fora_do_intervalo_ferias(dia_inicial= int(inicio_ferias.day), dia_final= int(fim_ferias.day),lista_dias_uteis= dias_uteis) 
             else:
                 dias_uteis_mes = dias_uteis
             # pegar data inicio e fim
@@ -289,7 +289,7 @@ def create_plan_modelo(dias_uteis,mes,ano):
                 squad = row[f'{COLUNA_SQUAD}']
                 dt_inicio_ferias = row[f'{COLUNA_INICIO}']
                 dt_fim_ferias = row[f'{COLUNA_FIM}']  
-                if nome == "MAIK BRAGA MOURA":
+                if nome == "Roberta Pereira Da Silva":
                     print("achou")
 
                 # valida ferias

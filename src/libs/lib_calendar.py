@@ -22,7 +22,7 @@ def get_feriados_api(ano, mes):
             pieces.lib_logging.logger.info(f" > Conectado com sucesso na api, response: {response.status_code}")
             feriados = response.json()
             #pieces.lib_logging.logger.info(f" > Retornou os feriados do ano: {feriados}")
-            return get_feriado_mes(feriados=feriados, ano=ano, mes=mes)
+            return get_feriado_mes(feriados=feriados, ano=ano, mes=mes), False
         else:
             pieces.lib_logging.logger.error(f" > Falha ao obter os feriados. response: {response.status_code}")
             falha = True    
@@ -67,8 +67,13 @@ def get_dias_uteis(mes, ano, feriados=[]):
         for i in range(1, ultimo_dia_mes + 1):
             dia = pieces.datetime.date(ano, mes, i)
             # Verifica se o dia não é um feriado, é um dia útil (não é sábado ou domingo) e não é feriado
-            if dia.weekday() < 5 and dia.strftime('%Y-%m-%d') not in feriados:
-                dias_uteis_sem_feriados.append(dia.day)
+            if feriados != None:
+                if dia.weekday() < 5 and dia.strftime('%Y-%m-%d') not in feriados:
+                    dias_uteis_sem_feriados.append(dia.day)
+            else:
+                if dia.weekday() < 5:
+                    dias_uteis_sem_feriados.append(dia.day)
+
         pieces.lib_logging.logger.error(f" > Total Dias Uteis: {len(dias_uteis_sem_feriados)}, dias_uteis: {dias_uteis_sem_feriados}") 
         code = 0   
         return dias_uteis_sem_feriados, code

@@ -29,7 +29,7 @@ def start_process():
         result[0] = error
     finally:
         #envia email com planilha em anexo
-        #envio_report_email(result[0],result[1])
+        envio_report_email(result[0],result[1])
         pieces.lib_logging.logger.info(f'[FIM] -> start_process : {PROCESS_NAME} ----  {title} ----')
 
 def envio_report_email(status, mensagem_execucao):

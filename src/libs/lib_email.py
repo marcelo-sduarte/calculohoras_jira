@@ -5,8 +5,6 @@ def send_email(EmailTo, Subject,Body,Co=None,output_path=None, nameFile=None):
         pieces.lib_logging.logger.info("[INICIO] send_email()")
         #get credentials
         username, password = pieces.lib_process.get_credential(target_name=EMAIL_TARGET)
-        #username  = "marcelo.duarte@cadmus.com.br"
-        #password = "MA@msd42"
         # Configurações do email
         subject = Subject
         # Criar objeto MIMEMultipart

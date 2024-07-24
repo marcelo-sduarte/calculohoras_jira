@@ -44,3 +44,18 @@ def connect_api_jira(ano, mes):
         pieces.lib_logging.logger.info(f"[FIM] connect_api_jira()")
 
 
+
+
+def get_secret_aws(secret_name):
+ 
+    #Defina a região
+    region_name = "us-east-1"
+
+    # Crie um cliente do Secrets Manager com a região especificada
+    client = pieces.boto3.client('secretsmanager', region_name=region_name)
+    secret_value = pieces.response['SecretString']
+
+    # Retorne o valor do segredo
+    return secret_value
+
+
