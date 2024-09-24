@@ -15,14 +15,11 @@ else:
 today = pieces.date.today().strftime('%d-%m-%y') 
 
 # paths
-PATH_PROCESS_FOLDER = r"C:\Users\marce\Documents\Python\Automation"+ pieces.os.sep + PROCESS_NAME
+PATH_PROCESS_FOLDER = r"C:\Users\XXX\Documents\Python\Automation"+ pieces.os.sep + PROCESS_NAME
 PATH_OUTPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "output"
 PATH_INPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "input"
 PATH_LOGS = PATH_OUTPUT + pieces.os.sep +"logs"
 PATH_FILES = PATH_OUTPUT + pieces.os.sep +"files"
-
-# PROJECTS JIRA
-PROJECTS = ["Tech-Descentralizada","Plataformas","Investor","Fundos Liquidos","FIDC","Fundos Estruturados","Fundos 175 - Cadmus","Corporate Back","Banking Frontend"]
 
 # Nome do File
 FILE_OUTPUT_JIRA = "export_jira.xlsx"
@@ -115,9 +112,8 @@ EMAIL_INTERNO = "marcelo.duarte@cadmus.com.br"
 
 #JIRA
 JIRA_SERVER = 'https://vortxtech.atlassian.net'
-JIRA_USER = 'seu_usuario'
-JIRA_API_TOKEN = 'seu_token_de_api'
-JIRA_QUERY = 'project in (BANK, COR, CS, FBACK, FIDC, FLIQ, INV, "Fundos Backoffice Cadmus", Escrituracao) and issuetype in ("Automação", "Debito Tecnico", Story) and resolutiondate >= startOfMonth(-1)  and resolutiondate < startOfMonth() and status = Done'
+PROJECTS = ["Tech-Descentralizada","Plataformas","Investor","Fundos Liquidos","FIDC","Fundos Estruturados","Fundos 175 - Cadmus","Corporate Back","Banking Frontend"]
+TARGET_TOKEN_JIRA = "token_jira"
 
 
 
