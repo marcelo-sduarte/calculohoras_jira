@@ -21,6 +21,9 @@ PATH_INPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "input"
 PATH_LOGS = PATH_OUTPUT + pieces.os.sep +"logs"
 PATH_FILES = PATH_OUTPUT + pieces.os.sep +"files"
 
+# PROJECTS JIRA
+PROJECTS = ["Tech-Descentralizada","Plataformas","Investor","Fundos Liquidos","FIDC","Fundos Estruturados","Fundos 175 - Cadmus","Corporate Back","Banking Frontend"]
+
 # Nome do File
 FILE_OUTPUT_JIRA = "export_jira.xlsx"
 # Path file  saida
