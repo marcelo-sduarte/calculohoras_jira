@@ -18,11 +18,16 @@ def start_process():
         result = pieces.lib_calendar.get_feriados_api(ano=ano, mes=mes)
 
         if not result[1]:
-            dias_uteis, code = pieces.lib_calendar.get_dias_uteis(ano=ano, mes=mes, feriados=result[0])
-            
-        if code == 0:
+            dias_uteis, erro = pieces.lib_calendar.get_dias_uteis(ano=ano, mes=mes, feriados=result[0])        
+        if erro == 0:    
+        # recupera dados do Jira
+            pieces.lib_jira.connect_api_jira()
         #funcao para tabela modelo
-            result = pieces.lib_spreadsheet.create_plan_modelo(dias_uteis=dias_uteis,mes=mes,ano=ano)          
+            result = pieces.lib_spreadsheet.create_plan_modelo(dias_uteis=dias_uteis,mes=mes,ano=ano) 
+        if result[0] == False or None:
+            pieces.lib_logging.logger.info(f'Processo de calculo executou com sucesso!!!')       
+        else:
+            raise(f'Processo de calculo executou com falha !!!')               
     except Exception as error:
         pieces.lib_logging.logger.error(f'>> start_process error message: ',error)  
         result[1] = True
