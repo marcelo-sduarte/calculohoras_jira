@@ -76,6 +76,8 @@ COLUMNS_BASE =[
 
 COLUMNS_PLAN_MODELO = ["Squad","Projeto","Título","Função","Nome","Inicio","Fim","Qtd Horas"]
 
+COL_JIRA_API = ["TDES","PLAT","INVT","FULQ","FID2","FBCK","F175","CORB","BAAS"]
+COL_SUBST =["Tech-Descentralizada","Plataformas","Investor","Fundos Liquidos","FIDC","Fundos Estruturados","Fundos 175 - Cadmus","Corporate Back","Banking Frontend"]
 
 # Hoje string formato dd/mm/yyyy
 HOJE_DATA = pieces.date.today().strftime('%d-%m-%y') 
