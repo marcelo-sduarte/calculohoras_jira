@@ -30,9 +30,9 @@ PATH_REPORT = pieces.os.path.join(PATH_FILES, FILE_OUTPUT_JIRA)
 FILENAME = PATH_LOGS + pieces.os.sep + f"output-{today}.log"
 
 # PATH E COLUNAS INPUT FILE XLSX JIRA
-PATH_EXCEL_2 = PATH_INPUT + pieces.os.sep + "jira-2024-06.xlsx"
+PATH_EXCEL_2 = PATH_INPUT + pieces.os.sep + "jira_api.xlsx"
 
-SHEET_2 = "Your Jira Issues"
+SHEET_2 = "Sheet1"
 COLUNA_PROJETO = 'Project'
 COLUNA_WORK_ITEM = 'Summary'
 COLUNA_KEY = 'Key'
