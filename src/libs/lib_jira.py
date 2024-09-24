@@ -1,5 +1,5 @@
 import pieces
-from gvars import JIRA_API_TOKEN, JIRA_SERVER, JIRA_USER, JIRA_QUERY
+from gvars import JIRA_API_TOKEN, JIRA_SERVER, JIRA_USER, PROJECTS
 
 def connect_api_jira(ano, mes):
     try:
@@ -20,10 +20,12 @@ def connect_api_jira(ano, mes):
                 'and status = Done').format(primeiro_dia, ultimo_dia)
         
         '''
-        query = ('project in ("Fundos 175 - Cadmus" , "Fundos BackOffice - Cadmus" , Boletador , "Fundos Liquidos" , FID2, Tech-Descentralizada, Investor , "Corporate Back" , "Corporate Front" , Plataformas , BAAS ) '
+        query = f"""
+                ('project in ({PROJECTS}) '
                  'and issuetype in ( "Debito Tecnico", Story) '
                  'and resolutiondate >= startOfMonth(-1) and '
                  'resolutiondate < startOfMonth() and status = Done')
+                """
         
         # Faz a consulta ao Jira   
         issues = jira.search_issues(query)
