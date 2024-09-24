@@ -1,5 +1,14 @@
 import pieces
 from gvars import *
+
+def formata_df(df):
+    try:
+       for palavra, substituicao in zip(COL_JIRA_API, COL_SUBST):
+            df['Project'] = df['Project'].str.replace(palavra, substituicao)
+    except Exception as error:
+       pieces.lib_logging.logger.error({error}) 
+    finally:
+        return df
        
 def coleta_indicadores(dataframe):
     try:
@@ -246,7 +255,9 @@ def create_plan_modelo(dias_uteis,mes,ano):
         df_jira_geral = pieces.pd.read_excel(PATH_EXCEL_2, sheet_name=SHEET_2)
         #selecionando somente duas colunas do Jira
         colunas_selecionadas = [f'{COLUNA_KEY}',f'{COLUNA_WORK_ITEM}', f'{COLUNA_PROJETO}']
-        df_jira = df_jira_geral[colunas_selecionadas]
+        df_jira_selecao = df_jira_geral[colunas_selecionadas]
+        #formata campo projeto para trocar de sigla para campo texto inteiro
+        df_jira = formata_df(df=df_jira_selecao)
         #recupera dados do excel com horas, projeto e funcionarios
         df_funcionarios = pieces.pd.read_excel(PATH_EXCEL_3, sheet_name=SHEET_3)
         # Chama funcao para calcular total funcionario em todas do projeto
