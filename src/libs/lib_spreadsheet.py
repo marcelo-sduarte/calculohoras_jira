@@ -1,14 +1,5 @@
 import pieces
 from gvars import *
-
-def formata_df(df):
-    try:
-       for palavra, substituicao in zip(COL_JIRA_API, COL_SUBST):
-            df['Project'] = df['Project'].str.replace(palavra, substituicao)
-    except Exception as error:
-       pieces.lib_logging.logger.error({error}) 
-    finally:
-        return df
        
 def coleta_indicadores(dataframe):
     try:
@@ -300,7 +291,7 @@ def create_plan_modelo(dias_uteis,mes,ano):
                 squad = row[f'{COLUNA_SQUAD}']
                 dt_inicio_ferias = row[f'{COLUNA_INICIO}']
                 dt_fim_ferias = row[f'{COLUNA_FIM}']  
-                if nome == "Roberta Pereira Da Silva":
+                if nome == "ANA CAROLINA CUPELLO":
                     print("achou")
 
                 # valida ferias
@@ -431,3 +422,15 @@ def valida_dias_uteis_file_func(dias_uteis, horas, ferias,nome):
         pieces.lib_logging.logger.info("> FIM valida_dias_uteis_file_func()")
     
             
+def formata_df(df):
+    try:
+       for palavra, substituicao in zip(COL_JIRA_API, COL_SUBST):
+            df['Project'] = df['Project'].str.replace(palavra, substituicao)
+    except Exception as error:
+       pieces.lib_logging.logger.error({error}) 
+    finally:
+        return df
+
+
+    
+    

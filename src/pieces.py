@@ -16,7 +16,7 @@ from jira.resources import Issue
 import logging, os
 import locale
 import libs
-from libs import lib_logging,lib_spreadsheet, lib_json, lib_process, lib_calendar,lib_email
+from libs import lib_logging,lib_spreadsheet, lib_json, lib_process, lib_calendar,lib_email, lib_jira
 import numpy as np
 import math
 import pandas as pd

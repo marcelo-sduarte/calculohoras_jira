@@ -15,14 +15,14 @@ else:
 today = pieces.date.today().strftime('%d-%m-%y') 
 
 # paths
-PATH_PROCESS_FOLDER = r"C:\Users\XXX\Documents\Python\Automation"+ pieces.os.sep + PROCESS_NAME
+PATH_PROCESS_FOLDER = r"C:\Users\marce\Documents\Python\Automation"+ pieces.os.sep + PROCESS_NAME
 PATH_OUTPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "output"
 PATH_INPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "input"
 PATH_LOGS = PATH_OUTPUT + pieces.os.sep +"logs"
 PATH_FILES = PATH_OUTPUT + pieces.os.sep +"files"
 
 # Nome do File
-FILE_OUTPUT_JIRA = "export_jira.xlsx"
+FILE_OUTPUT_JIRA = "export.xlsx"
 # Path file  saida
 PATH_REPORT = pieces.os.path.join(PATH_FILES, FILE_OUTPUT_JIRA)
 
@@ -38,7 +38,7 @@ COLUNA_WORK_ITEM = 'Summary'
 COLUNA_KEY = 'Key'
 
 # COLUNAS INPUT FILE XLSX FUNCIONARIOS
-PATH_EXCEL_3 = PATH_INPUT + pieces.os.sep + "BookJun.xlsx"
+PATH_EXCEL_3 = PATH_INPUT + pieces.os.sep + "BookAgo.xlsx"
 COLUNA_SQUAD = 'Squad'
 COLUNA_PROJETO_FUNC = 'Projeto'
 COLUNA_NOME_FUNC = 'Nome'
@@ -79,6 +79,7 @@ COLUMNS_PLAN_MODELO = ["Squad","Projeto","Título","Função","Nome","Inicio","F
 COL_JIRA_API = ["TDES","PLAT","INVT","FULQ","FID2","FBCK","F175","CORB","BAAS"]
 COL_SUBST =["Tech-Descentralizada","Plataformas","Investor","Fundos Liquidos","FIDC","Fundos Estruturados","Fundos 175 - Cadmus","Corporate Back","Banking Frontend"]
 
+
 # Hoje string formato dd/mm/yyyy
 HOJE_DATA = pieces.date.today().strftime('%d-%m-%y') 
 
@@ -113,10 +114,9 @@ EMAIL_SUPPORT = "marcelo.duarte@cadmus.com.br"
 EMAIL_INTERNO = "marcelo.duarte@cadmus.com.br"
 
 #JIRA
-JIRA_SERVER = 'https://vortxtech.atlassian.net'
+JIRA_ENDPOINT = 'https://vortxtech.atlassian.net'
 PROJECTS = ["Tech-Descentralizada","Plataformas","Investor","Fundos Liquidos","FIDC","Fundos Estruturados","Fundos 175 - Cadmus","Corporate Back","Banking Frontend"]
 TARGET_TOKEN_JIRA = "token_jira"
-
 
 
 

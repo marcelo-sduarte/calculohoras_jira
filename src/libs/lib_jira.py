@@ -1,7 +1,7 @@
 import pieces
 from gvars import JIRA_ENDPOINT, PROJECTS, PATH_INPUT, TARGET_TOKEN_JIRA
 
-def connect_api_jira(ano, mes):
+def connect_api_jira():
     try:
         pieces.lib_logging.logger.info(f"[INICIO] connect_api_jira()")
         # recupera user e token
@@ -10,11 +10,11 @@ def connect_api_jira(ano, mes):
         jira = pieces.JIRA(JIRA_ENDPOINT, basic_auth=(jira_user, jira_token))
 
         # Define a data de início do mês anterior e o início deste mês
-        primeiro_dia = pieces.datetime.datetime(ano, mes, 1).strftime("%Y-%m-%d")
-        ultimo_dia = pieces.datetime.datetime(ano, mes, pieces.calendar.monthrange(ano, mes)[1]).strftime("%Y-%m-%d") 
+        #primeiro_dia = pieces.datetime.datetime(ano, mes, 1).strftime("%Y-%m-%d")
+        #ultimo_dia = pieces.datetime.datetime(ano, mes, pieces.calendar.monthrange(ano, mes)[1]).strftime("%Y-%m-%d") 
 
         # Define a query JQL
-        '''
+        ''' Exemplo passado pelo Fabio
         query = ('project in (BANK, COR, CS, FBACK, FIDC, FLIQ, INV, "Fundos Backoffice Cadmus", Escrituracao) '
                 'and issuetype in ("Automação", "Debito Tecnico", Story) '
                 'and resolutiondate >= "{}" '
@@ -55,6 +55,7 @@ def connect_api_jira(ano, mes):
         df = pieces.pd.DataFrame(data)
         # Salva o DataFrame como um arquivo Excel
         df.to_excel(PATH_INPUT +'/jira_api.xlsx', index=False, )
+        
     except Exception as error:
         pieces.lib_logging.logger.error(f" > message error connect_api_jira: {error}")
     finally:

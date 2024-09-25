@@ -92,7 +92,8 @@ def get_data_inicio_fim(list_horas,dias_uteis,horas,row,saldo,mes,ano):
     adicionado_horas = False
     try:              
         #verifica diferenca horas por dia    
-        dias = int(horas / 8)
+        dias = horas / 8
+        #dias = int(sum(list_horas) / 8)
         if (dias * 8) != horas:
             dif_horas = horas - (dias * 8) 
             saldo = int(saldo) + dif_horas

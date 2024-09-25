@@ -2,15 +2,18 @@ import pieces
 from gvars import *
 
 def verify_structure():
-    if not pieces.os.path.exists(PATH_INPUT):
-        pieces.os.mkdir(PATH_INPUT)
-    if not pieces.os.path.exists(PATH_OUTPUT):
-        pieces.os.mkdir(PATH_OUTPUT)
-    if not pieces.os.path.exists(PATH_LOGS):
-        pieces.os.mkdir(PATH_LOGS)
-    if not pieces.os.path.exists(PATH_FILES):
-        pieces.os.mkdir(PATH_FILES)    
-
+    try:
+        if not pieces.os.path.exists(PATH_INPUT):
+            pieces.os.mkdir(PATH_INPUT)
+        if not pieces.os.path.exists(PATH_OUTPUT):
+            pieces.os.mkdir(PATH_OUTPUT)
+        if not pieces.os.path.exists(PATH_LOGS):
+            pieces.os.mkdir(PATH_LOGS)
+        if not pieces.os.path.exists(PATH_FILES):
+            pieces.os.mkdir(PATH_FILES)    
+    except Exception as error:
+        print(error)
+        
 def remove_files_in_folder(folder_path):
     # Verifica se o caminho fornecido é um diretório
     if not pieces.os.path.isdir(folder_path):
