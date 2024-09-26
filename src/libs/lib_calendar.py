@@ -20,9 +20,12 @@ def get_feriados_api(ano, mes):
         # verifica o request code
         if response.status_code in (200,201,202,204):
             pieces.lib_logging.logger.info(f" > Conectado com sucesso na api, response: {response.status_code}")
-            feriados = response.json()
+            feriados_response = response.json()
             #pieces.lib_logging.logger.info(f" > Retornou os feriados do ano: {feriados}")
-            return get_feriado_mes(feriados=feriados, ano=ano, mes=mes), False
+            if PRD:
+                holidays = [item['Holiday'] for item in feriados_response['holidays']]
+                feriados_response = holidays
+            return get_feriado_mes(feriados=feriados_response, ano=ano, mes=mes), False
         else:
             pieces.lib_logging.logger.error(f" > Falha ao obter os feriados. response: {response.status_code}")
             falha = True    
@@ -39,16 +42,17 @@ def get_feriado_mes(feriados, ano, mes):
     list_feriado_mes = []
     for feriado in feriados:
         if PRD:
-            data = feriado['Holiday']
+            # Separando a data e ignorando o tempo (T00:00:00)
+            data = feriado.split('T')[0]
         else:
             data = feriado['date']
         feriado_ano, feriado_mes, _ = map(int, data.split('-'))
         if feriado_ano == ano and feriado_mes == mes:
             list_feriado_mes.append(data)
-            #list_feriado_mes.append('2024-05-30')
-            pieces.lib_logging.logger.info(f"> Neste mes tem os seguintes feriados: {list_feriado_mes}")
-            falha = False
-            return list_feriado_mes, falha
+            #list_feriado_mes.append('2024-05-30')        
+            falha = False            
+    pieces.lib_logging.logger.info(f"> Neste mes tem os seguintes feriados: {list_feriado_mes}")
+    return list_feriado_mes, falha
         
    except Exception as error:
     pieces.lib_logging.logger.info(f" > message error: {error}")
