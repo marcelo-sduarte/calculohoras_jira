@@ -60,7 +60,7 @@ DAYS_WEEK = [SATURDAY, SUNDAY]
 
 
 # URLS
-# endpoint homologacao ANBIMA
+# Endpoint Homologacao ANBIMA
 HMG_ANBIMA = "https://privateservices-stg.vortx.com.br/vxferiados/api/Holiday/GetInRange?"
 PRD_ANBIMA = ""
 
@@ -110,11 +110,9 @@ EMAIL_TARGET = "email_cadmus"
 # CONF EMAIL
 EMAIL_SMTP = "email-ssl.com.br"
 EMAIL_PORT = 587
-#EMAIL_INTERNO = "marcelo.duarte@cadmus.com.br,vinicius.cortez@cadmus.com.br"
-#EMAIL_CLIENT = "fsh@vortx.com.br"
-EMAIL_CLIENT = "marcelo.duarte@cadmus.com.br"
-EMAIL_SUPPORT = "marcelo.duarte@cadmus.com.br"
-EMAIL_INTERNO = "marcelo.duarte@cadmus.com.br"
+EMAIL_CLIENT = ""
+EMAIL_SUPPORT = ""
+EMAIL_INTERNO = ""
 
 #JIRA
 JIRA_ENDPOINT = 'https://vortxtech.atlassian.net'
