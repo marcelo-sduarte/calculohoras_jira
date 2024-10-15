@@ -55,11 +55,15 @@ def connect_api_jira():
         df = pieces.pd.DataFrame(data)
         # Salva o DataFrame como um arquivo Excel
         df.to_excel(PATH_INPUT +'/jira_api.xlsx', index=False, )
-        
+        continuar = True
+        msg = "Sucesso"
     except Exception as error:
         pieces.lib_logging.logger.error(f" > message error connect_api_jira: {error}")
+        continuar = False
+        msg = error
     finally:
         pieces.lib_logging.logger.info(f"[FIM] connect_api_jira()")
+        return continuar, msg
 
 
 

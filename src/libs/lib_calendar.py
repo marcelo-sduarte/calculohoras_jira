@@ -3,6 +3,7 @@ import pieces
 
 def get_feriados_api(ano, mes):
     try:
+        falha = False
         pieces.lib_logging.logger.info(f"[INICIO] get_feriados()")
         # pega o primeiro e ultimo dia do mes para enpoint da Anbima
         primeiro_dia = pieces.datetime.datetime(ano, mes, 1).strftime("%Y-%m-%d")
@@ -25,40 +26,38 @@ def get_feriados_api(ano, mes):
             if PRD:
                 holidays = [item['Holiday'] for item in feriados_response['holidays']]
                 feriados_response = holidays
-            return get_feriado_mes(feriados=feriados_response, ano=ano, mes=mes), False
+            return get_feriado_mes(feriados=feriados_response, ano=ano, mes=mes)
         else:
-            pieces.lib_logging.logger.error(f" > Falha ao obter os feriados. response: {response.status_code}")
-            falha = True    
+            raise(f" > Falha ao obter os feriados. response: {response.status_code}")                     
     except Exception as error:
         pieces.lib_logging.logger.error(f"mensagem: {error}")
-        falha = True
-        return falha, error
+        continuar = False
+        return continuar, error
     finally:
-        pieces.lib_logging.logger.info(f"[FIM] get_feriados()")
+        pieces.lib_logging.logger.info(f"[FIM] get_feriados()")        
 
 def get_feriado_mes(feriados, ano, mes):
-   try:
-    pieces.lib_logging.logger.info(f"[INICIO] get_feriado_mes()")
-    list_feriado_mes = []
-    for feriado in feriados:
-        if PRD:
-            # Separando a data e ignorando o tempo (T00:00:00)
-            data = feriado.split('T')[0]
-        else:
-            data = feriado['date']
-        feriado_ano, feriado_mes, _ = map(int, data.split('-'))
-        if feriado_ano == ano and feriado_mes == mes:
-            list_feriado_mes.append(data)
-            #list_feriado_mes.append('2024-05-30')        
-            falha = False            
-    pieces.lib_logging.logger.info(f"> Neste mes tem os seguintes feriados: {list_feriado_mes}")
-    return list_feriado_mes, falha
-        
-   except Exception as error:
-    pieces.lib_logging.logger.info(f" > message error: {error}")
-    falha = True
-   finally:
-       pieces.lib_logging.logger.info(f"[FIM] get_feriado_mes()")
+    try:
+        pieces.lib_logging.logger.info(f"[INICIO] get_feriado_mes()")
+        list_feriado_mes = []
+        for feriado in feriados:
+            if PRD:
+                # Separando a data e ignorando o tempo (T00:00:00)
+                data = feriado.split('T')[0]
+            else:
+                data = feriado['date']
+            feriado_ano, feriado_mes, _ = map(int, data.split('-'))
+            if feriado_ano == ano and feriado_mes == mes:
+                list_feriado_mes.append(data)
+                #list_feriado_mes.append('2024-05-30')        
+        continuar = True            
+        pieces.lib_logging.logger.info(f"> Neste mes tem os seguintes feriados: {list_feriado_mes}")        
+    except Exception as error:
+        pieces.lib_logging.logger.info(f" > message error: {error}")
+        continuar = False
+    finally:
+        pieces.lib_logging.logger.info(f"[FIM] get_feriado_mes()")
+    return  continuar,list_feriado_mes
 
 def get_dias_uteis(mes, ano, feriados=[]):
     try:
@@ -79,13 +78,12 @@ def get_dias_uteis(mes, ano, feriados=[]):
                     dias_uteis_sem_feriados.append(dia.day)
 
         pieces.lib_logging.logger.error(f" > Total Dias Uteis: {len(dias_uteis_sem_feriados)}, dias_uteis: {dias_uteis_sem_feriados}") 
-        code = 0   
-        return dias_uteis_sem_feriados, code
+        continuar = True  
+        return continuar, dias_uteis_sem_feriados
     except Exception as error:
         pieces.lib_logging.logger.error(f" > get_dias_uteis, message: {error}")
-        msg = error
-        code = -1
-        return error, msg
+        continuar = False
+        return continuar, error
     finally:
         pieces.lib_logging.logger.info(f"[FIM] get_dias_uteis()")
     

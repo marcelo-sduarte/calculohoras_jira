@@ -15,64 +15,66 @@ def start_process():
         # Exclui todos files temporarios
         pieces.lib_process.remove_files_in_folder(PATH_OUTPUT)     
         # recupera os feriados
-        result = pieces.lib_calendar.get_feriados_api(ano=ano, mes=mes)
-
-        if not result[1]:
-            dias_uteis, erro = pieces.lib_calendar.get_dias_uteis(ano=ano, mes=mes, feriados=result[0])
-            
-        if erro == 0:
-        # recupera dados do Jira
-            pieces.lib_jira.connect_api_jira()
-        #funcao para tabela modelo
-            result = pieces.lib_spreadsheet.create_plan_modelo(dias_uteis=dias_uteis,mes=mes,ano=ano) 
-        if result[0] == False or None:
-            pieces.lib_logging.logger.info(f'Processo de calculo executou com sucesso!!!')       
+        continuar, string_return = pieces.lib_calendar.get_feriados_api(ano=ano, mes=mes)
+        # chama funcao para recuperar dias uteis
+        if continuar:         
+            continuar, string_return = pieces.lib_calendar.get_dias_uteis(ano=ano, mes=mes, feriados=string_return)                    
+        # chama funcao para recuperar jira
+        if continuar:
+            continuar, string_return = pieces.lib_jira.connect_api_jira()        
+        #Se houver falhas sinaliza para o exception
+        if continuar:
+            # inicia criacao da planilha
+            continuar, string_return = pieces.lib_spreadsheet.create_plan_modelo(dias_uteis=string_return,mes=mes,ano=ano) 
+        # finaliza automacao
+        if continuar:
+            pieces.lib_logging.logger.info(f'Processo de calculo executou com sucesso!!!')    
         else:
-            raise(f'Processo de calculo executou com falha !!!')       
-            
-            
+            raise            
     except Exception as error:
-        pieces.lib_logging.logger.error(f'>> start_process error message: ',error)  
-        result[1] = True
-        result[0] = error
+        if string_return != None and continuar == False:
+            error = string_return
+        pieces.lib_logging.logger.error(f'>> start_process error message: {error}') 
+        falha = True         
     finally:
         #envia email com planilha em anexo
-        #envio_report_email(result[0],result[1])
+        envio_report_email(falha,string_return)
         pieces.lib_logging.logger.info(f'[FIM] -> start_process : {PROCESS_NAME} ----  {title} ----')
 
-def envio_report_email(status, mensagem_execucao):
-    try:
-        pieces.lib_logging.logger.info(f'[INICIO] -> envio_report_email')
-        if PRD:
-            if status:    
-                pieces.lib_email.send_email(EmailTo = EMAIL_CLIENT,
-                                            Co = EMAIL_INTERNO,
-                                            Body= f" Falha ao processar, message: {mensagem_execucao}",
-                                            Subject= "[Falha] Robo Calculo Jira - Envio relatorio Horas Squads Vortx")
+def envio_report_email(falha, mensagem_execucao):
+    if ENVIO_EMAIL:
+        try:
+            pieces.lib_logging.logger.info(f'[INICIO] -> envio_report_email')
+            if PRD:
+                if falha:    
+                    pieces.lib_email.send_email(EmailTo = EMAIL_CLIENT,
+                                                Co = EMAIL_INTERNO,
+                                                Body= f" Falha ao processar, message: {mensagem_execucao}",
+                                                Subject= "[Falha] Robo Calculo Jira - Envio relatorio Horas Squads Vortx")
+                else:
+                    pieces.lib_email.send_email(EmailTo = EMAIL_CLIENT,
+                                                Co = EMAIL_INTERNO,
+                                            Body= """Processo de calculos de horas, processou com sucesso, verificar file em anexo.   
+                                            """,
+                                            nameFile= FILE_OUTPUT_JIRA,
+                                            output_path= PATH_REPORT,
+                                        Subject= "[Sucesso] Robo Calculo Jira - Envio relatorio Horas Squads Vortx")
             else:
-                pieces.lib_email.send_email(EmailTo = EMAIL_CLIENT,
-                                            Co = EMAIL_INTERNO,
-                                        Body= """Processo de calculos de horas, processou com sucesso, verificar file em anexo.   
-                                        """,
-                                        nameFile= FILE_OUTPUT_JIRA,
-                                        output_path= PATH_REPORT,
-                                    Subject= "[Sucesso] Robo Calculo Jira - Envio relatorio Horas Squads Vortx")
-        else:
-            if status:    
-                pieces.lib_email.send_email(EmailTo = EMAIL_SUPPORT ,                                           
-                                            Body= f" Falha ao processar, message: {mensagem_execucao}",
-                                            Subject= "[Falha] Homologação - Teste envio relatorio Vortx")
-            else:
-                pieces.lib_email.send_email(EmailTo = EMAIL_SUPPORT ,                                     
-                                        Body= "Processo de calculos de horas, processou com sucesso, verificar file em anexo.",
-                                        nameFile= FILE_OUTPUT_JIRA,
-                                        output_path= PATH_REPORT,
-                                    Subject= "[SUCESSO] Homologação - Teste envio relatorio Vortx")
-        pieces.lib_logging.logger.info(f'-> envio_report_email, modo PRD: {PRD} com status falha: {status}')
-    except Exception as error:
-        pieces.lib_logging.logger.error(f' -> envio_report_email, message: {error}')
-    finally:
-        pieces.lib_logging.logger.info(f'[FIM] -> envio_report_email')
+                if falha:    
+                    pieces.lib_email.send_email(EmailTo = EMAIL_SUPPORT ,                                           
+                                                Body= f" Falha ao processar, message: {mensagem_execucao}",
+                                                Subject= "[Falha] Homologação - Teste envio relatorio Vortx")
+                else:
+                    pieces.lib_email.send_email(EmailTo = EMAIL_SUPPORT ,                                     
+                                            Body= "Processo de calculos de horas, processou com sucesso, verificar file em anexo.",
+                                            nameFile= FILE_OUTPUT_JIRA,
+                                            output_path= PATH_REPORT,
+                                        Subject= "[SUCESSO] Homologação - Teste envio relatorio Vortx")
+            pieces.lib_logging.logger.info(f'-> envio_report_email, modo PRD: {PRD} com status falha: {falha}')
+        except Exception as error:
+            pieces.lib_logging.logger.error(f' -> envio_report_email, message: {error}')
+        finally:
+            pieces.lib_logging.logger.info(f'[FIM] -> envio_report_email')
 
 
 if __name__ == '__main__':

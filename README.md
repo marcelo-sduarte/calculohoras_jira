@@ -44,6 +44,9 @@ python main.py
 
 7. Todas as bibliotecas usadas no python constam no file [pieces.py]
 
+8.Salve as credentials no cofre do windows e edite as variaves que constam no [gvars.py], Ex: TARGET_TOKEN_JIRA e EMAIL_TARGET
+
+9. Pode usar as funções def save_credential e def get_credential que constam na [lib_process.py] para salvar as credentials no cofre do windows.
 
 # Licença
 Este projeto é licenciado sob a Licença MIT - consulte o arquivo LICENSE para obter mais detalhes.

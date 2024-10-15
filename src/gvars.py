@@ -1,6 +1,7 @@
 import pieces
 # environment
-PRD = False
+PRD = True
+ENVIO_EMAIL = False
 
 # PROCESS
 PROCESS_NAME = "CALCULOSHORAS_JIRA"
@@ -9,6 +10,7 @@ if PRD:
     title = 'Executando em modo Produção'
 else:
     title = 'Executando em modo Homologação'
+
 
 
 # TODAY
@@ -21,7 +23,7 @@ PATH_INPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "input"
 PATH_LOGS = PATH_OUTPUT + pieces.os.sep +"logs"
 PATH_FILES = PATH_OUTPUT + pieces.os.sep +"files"
 
-# Nome do File
+# Nome do File de exportacao
 FILE_OUTPUT_JIRA = "export.xlsx"
 # Path file  saida
 PATH_REPORT = pieces.os.path.join(PATH_FILES, FILE_OUTPUT_JIRA)
@@ -29,16 +31,17 @@ PATH_REPORT = pieces.os.path.join(PATH_FILES, FILE_OUTPUT_JIRA)
 #filename logs
 FILENAME = PATH_LOGS + pieces.os.sep + f"output-{today}.log"
 
-# PATH E COLUNAS INPUT FILE XLSX JIRA
+# CONFIG FILE JIRA 
+#PATH_EXCEL_2 = PATH_INPUT + pieces.os.sep + "jira_api_fabio.xlsx"
 PATH_EXCEL_2 = PATH_INPUT + pieces.os.sep + "jira_api.xlsx"
-
+#SHEET_2 = "Your Jira Issues"
 SHEET_2 = "Sheet1"
 COLUNA_PROJETO = 'Project'
 COLUNA_WORK_ITEM = 'Summary'
 COLUNA_KEY = 'Key'
 
-# COLUNAS INPUT FILE XLSX FUNCIONARIOS
-PATH_EXCEL_3 = PATH_INPUT + pieces.os.sep + "BookAgo.xlsx"
+# CONFI FILE BASE DE FUNCIONARIOS
+PATH_EXCEL_3 = PATH_INPUT + pieces.os.sep + "BookSet.xlsx"
 COLUNA_SQUAD = 'Squad'
 COLUNA_PROJETO_FUNC = 'Projeto'
 COLUNA_NOME_FUNC = 'Nome'
@@ -77,7 +80,7 @@ COLUMNS_BASE =[
 COLUMNS_PLAN_MODELO = ["Squad","Projeto","Título","Função","Nome","Inicio","Fim","Qtd Horas"]
 
 COL_JIRA_API = ["TDES","PLAT","INVT","FULQ","FID2","FBCK","F175","CORB","BAAS"]
-COL_SUBST =["Tech-Descentralizada","Plataformas","Investor","Fundos Liquidos","FIDC","Fundos Estruturados","Fundos 175 - Cadmus","Corporate Back","Banking Frontend"]
+
 
 
 # Hoje string formato dd/mm/yyyy
@@ -115,9 +118,8 @@ EMAIL_INTERNO = "marcelo.duarte@cadmus.com.br"
 
 #JIRA
 JIRA_ENDPOINT = 'https://vortxtech.atlassian.net'
-PROJECTS = ["Tech-Descentralizada","Plataformas","Investor","Fundos Liquidos","FIDC","Fundos Estruturados","Fundos 175 - Cadmus","Corporate Back","Banking Frontend"]
+PROJECTS = ["Tech-Descentralizada","Plataformas","Investor","Fundos Liquidos","FIDC","Fundos Estruturados","Fundos 175 - Cadmus","Corporate Back","Banking FrontOffice"]
 TARGET_TOKEN_JIRA = "token_jira"
-
 
 
 

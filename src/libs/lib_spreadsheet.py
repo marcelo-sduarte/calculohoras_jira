@@ -240,6 +240,7 @@ def distribuir_horas(horas, partes):
 def create_plan_modelo(dias_uteis,mes,ano):
     try:  
         lista_erros = []
+        total_anterior = 0
         falha = False
         pieces.lib_logging.logger.info("> INICIO create_plan_modelo()")    
         #recupera dados do excel JIRA
@@ -291,8 +292,7 @@ def create_plan_modelo(dias_uteis,mes,ano):
                 squad = row[f'{COLUNA_SQUAD}']
                 dt_inicio_ferias = row[f'{COLUNA_INICIO}']
                 dt_fim_ferias = row[f'{COLUNA_FIM}']  
-                if nome == "ANA CAROLINA CUPELLO":
-                    print("achou")
+                
 
                 # valida ferias
                 if not pieces.pd.isnull(dt_inicio_ferias) and not pieces.pd.isnull(horas):
@@ -366,6 +366,7 @@ def create_plan_modelo(dias_uteis,mes,ano):
                                                     Total horas:{} 
                                                     Linhas add:{}""".format(projeto,nome,funcao,horas_por_work_itens,horas,add_total_item))                                                                                                   
                 # funcao para adicionar as linhas no dataframe modelo
+                
                 row_df_modelo = insert_rows_dataframe(dataframe=df_modelo,
                                     row_df_modelo=row_df_modelo,
                                     add_total_item=add_total_item,
@@ -390,13 +391,17 @@ def create_plan_modelo(dias_uteis,mes,ano):
         if not falha:
             pieces.lib_logging.logger.info(f"df modelo: {df_modelo.head()}")
             pieces.lib_logging.logger.info(f">create_plan_modelo: no path: {PATH_REPORT}")
-            df_modelo.to_excel(PATH_REPORT, index=False)  
+            df_modelo.to_excel(PATH_REPORT, index=False) 
+            continuar = True 
+            msg = "Sucesso"
     except Exception as error:
         pieces.lib_logging.logger.error(f"> ERRO create_plan_modelo: message: {error}")
         pieces.traceback.print_exc()
+        continuar = False
+        msg = error
     finally:
         pieces.lib_logging.logger.info("> FIM create_plan_modelo()")
-        return falha, lista_erros 
+        return continuar, msg 
     
 def valida_dias_uteis_file_func(dias_uteis, horas, ferias,nome):
     try:
@@ -424,11 +429,12 @@ def valida_dias_uteis_file_func(dias_uteis, horas, ferias,nome):
             
 def formata_df(df):
     try:
-       for palavra, substituicao in zip(COL_JIRA_API, COL_SUBST):
+       for palavra, substituicao in zip(COL_JIRA_API, PROJECTS):
             df['Project'] = df['Project'].str.replace(palavra, substituicao)
     except Exception as error:
        pieces.lib_logging.logger.error({error}) 
     finally:
+        #df.to_excel(PATH_REPORT, index=False) 
         return df
 
 
