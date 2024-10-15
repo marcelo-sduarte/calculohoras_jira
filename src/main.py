@@ -21,14 +21,16 @@ def start_process():
             continuar, string_return = pieces.lib_calendar.get_dias_uteis(ano=ano, mes=mes, feriados=string_return)                    
         # chama funcao para recuperar jira
         if continuar:
-            continuar, string_return = pieces.lib_jira.connect_api_jira()        
+            continuar, string_return = pieces.lib_jira.connect_api_jira()   
+            dias_uteis = string_return                     
         #Se houver falhas sinaliza para o exception
         if continuar:
             # inicia criacao da planilha
-            continuar, string_return = pieces.lib_spreadsheet.create_plan_modelo(dias_uteis=string_return,mes=mes,ano=ano) 
+            continuar, string_return = pieces.lib_spreadsheet.create_plan_modelo(dias_uteis=dias_uteis,mes=mes,ano=ano) 
         # finaliza automacao
         if continuar:
             pieces.lib_logging.logger.info(f'Processo de calculo executou com sucesso!!!')    
+            falha = False   
         else:
             raise            
     except Exception as error:
