@@ -1,3 +1,6 @@
+"""
+Contem todas as bibliotecas usadas na automação
+"""
 import boto3
 import codecs
 import calendar

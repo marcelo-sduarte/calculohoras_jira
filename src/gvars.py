@@ -1,7 +1,13 @@
 import pieces
+
+"""
+Aqui consta todos paths e variaveis globais
+"""
+
 # environment
-PRD = True
+PRD = False
 ENVIO_EMAIL = False
+API_JIRA = False
 
 # PROCESS
 PROCESS_NAME = "CALCULOSHORAS_JIRA"
@@ -17,7 +23,7 @@ else:
 today = pieces.date.today().strftime('%d-%m-%y') 
 
 # paths
-PATH_PROCESS_FOLDER = r"C:\Users\YOUR_USER\Documents\Python\Automation"+ pieces.os.sep + PROCESS_NAME
+PATH_PROCESS_FOLDER = r"C:\Users\marce\Documents\Python\Automation"+ pieces.os.sep + PROCESS_NAME
 PATH_OUTPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "output"
 PATH_INPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "input"
 PATH_LOGS = PATH_OUTPUT + pieces.os.sep +"logs"
@@ -34,14 +40,18 @@ FILENAME = PATH_LOGS + pieces.os.sep + f"output-{today}.log"
 # CONFIG FILE JIRA 
 #PATH_EXCEL_2 = PATH_INPUT + pieces.os.sep + "jira_api_fabio.xlsx"
 PATH_EXCEL_2 = PATH_INPUT + pieces.os.sep + "jira_api.xlsx"
-#SHEET_2 = "Your Jira Issues"
-SHEET_2 = "Sheet1"
+if API_JIRA:
+    SHEET_2 = "Sheet1"
+else:
+    SHEET_2 = "Your Jira Issues"
+    
+
 COLUNA_PROJETO = 'Project'
 COLUNA_WORK_ITEM = 'Summary'
 COLUNA_KEY = 'Key'
 
 # CONFI FILE BASE DE FUNCIONARIOS
-PATH_EXCEL_3 = PATH_INPUT + pieces.os.sep + "BookSet.xlsx"
+PATH_EXCEL_3 = PATH_INPUT + pieces.os.sep + "BookNov.xlsx"
 COLUNA_SQUAD = 'Squad'
 COLUNA_PROJETO_FUNC = 'Projeto'
 COLUNA_NOME_FUNC = 'Nome'
@@ -60,7 +70,7 @@ DAYS_WEEK = [SATURDAY, SUNDAY]
 
 
 # URLS
-# Endpoint Homologacao ANBIMA
+# endpoint homologacao ANBIMA
 HMG_ANBIMA = "https://privateservices-stg.vortx.com.br/vxferiados/api/Holiday/GetInRange?"
 PRD_ANBIMA = ""
 
@@ -79,7 +89,7 @@ COLUMNS_BASE =[
 
 COLUMNS_PLAN_MODELO = ["Squad","Projeto","Título","Função","Nome","Inicio","Fim","Qtd Horas"]
 
-COL_JIRA_API = ["TDES","PLAT","INVT","FULQ","FID2","FBCK","F175","CORB","BAAS"]
+
 
 
 
@@ -110,13 +120,16 @@ EMAIL_TARGET = "email_cadmus"
 # CONF EMAIL
 EMAIL_SMTP = "email-ssl.com.br"
 EMAIL_PORT = 587
-EMAIL_CLIENT = ""
-EMAIL_SUPPORT = ""
-EMAIL_INTERNO = ""
+#EMAIL_INTERNO = "marcelo.duarte@cadmus.com.br,vinicius.cortez@cadmus.com.br"
+#EMAIL_CLIENT = "fsh@vortx.com.br"
+EMAIL_CLIENT = "marcelo.duarte@cadmus.com.br"
+EMAIL_SUPPORT = "marcelo.duarte@cadmus.com.br"
+EMAIL_INTERNO = "marcelo.duarte@cadmus.com.br"
 
+COL_JIRA_API = ["TDES","PLAT","INVT","FULQ","FID2","FBCK","F175","CORB","BAAS","VONE"]
 #JIRA
 JIRA_ENDPOINT = 'https://vortxtech.atlassian.net'
-PROJECTS = ["Tech-Descentralizada","Plataformas","Investor","Fundos Liquidos","FIDC","Fundos Estruturados","Fundos 175 - Cadmus","Corporate Back","Banking FrontOffice"]
+PROJECTS = ["Tech-Descentralizada","Plataformas","Investor","Fundos Liquidos","FIDC","Fundos Estruturados","Fundos 175 - Cadmus","Corporate Back","Banking FrontOffice","Vortx One"]
 TARGET_TOKEN_JIRA = "token_jira"
 
 

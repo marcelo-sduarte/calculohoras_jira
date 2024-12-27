@@ -1,6 +1,9 @@
 import pieces
 from gvars import *
 
+"""
+Main chama todas outras funcoes para executar a automacao
+"""
     
 def start_process():
     try: 
@@ -18,19 +21,19 @@ def start_process():
         continuar, string_return = pieces.lib_calendar.get_feriados_api(ano=ano, mes=mes)
         # chama funcao para recuperar dias uteis
         if continuar:         
-            continuar, string_return = pieces.lib_calendar.get_dias_uteis(ano=ano, mes=mes, feriados=string_return)                    
+            continuar, string_return = pieces.lib_calendar.get_dias_uteis(ano=ano, mes=mes, feriados=string_return)  
+            dias_uteis = string_return                
         # chama funcao para recuperar jira
-        if continuar:
-            continuar, string_return = pieces.lib_jira.connect_api_jira()   
-            dias_uteis = string_return                     
+        if continuar and API_JIRA:
+            continuar, string_return = pieces.lib_jira.connect_api_jira()        
         #Se houver falhas sinaliza para o exception
         if continuar:
             # inicia criacao da planilha
             continuar, string_return = pieces.lib_spreadsheet.create_plan_modelo(dias_uteis=dias_uteis,mes=mes,ano=ano) 
         # finaliza automacao
         if continuar:
-            pieces.lib_logging.logger.info(f'Processo de calculo executou com sucesso!!!')    
-            falha = False   
+            pieces.lib_logging.logger.info(f'Processo de calculo executou com sucesso!!!') 
+            falha = False     
         else:
             raise            
     except Exception as error:
