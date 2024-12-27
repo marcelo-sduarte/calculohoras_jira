@@ -1,5 +1,8 @@
 import pieces
 from gvars import *
+"""
+Todos processos para validar framework da automacao
+"""
 
 def verify_structure():
     try:

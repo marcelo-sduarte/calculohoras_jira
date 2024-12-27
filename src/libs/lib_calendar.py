@@ -1,6 +1,8 @@
 from gvars import HMG_ANBIMA, PRD
 import pieces
-
+"""
+Todos processos referentes a busca das datas do calendario e calculo de dias uteis
+"""
 def get_feriados_api(ano, mes):
     try:
         falha = False
@@ -76,7 +78,8 @@ def get_dias_uteis(mes, ano, feriados=[]):
             else:
                 if dia.weekday() < 5:
                     dias_uteis_sem_feriados.append(dia.day)
-        pieces.lib_logging.logger.error(f" > Total Dias Uteis: {len(dias_uteis_sem_feriados)}, dias_uteis: {dias_uteis_sem_feriados}") 
+
+        pieces.lib_logging.logger.info(f" > Total Dias Uteis: {len(dias_uteis_sem_feriados)}, dias_uteis: {dias_uteis_sem_feriados}") 
         continuar = True  
         return continuar, dias_uteis_sem_feriados
     except Exception as error:
@@ -87,11 +90,11 @@ def get_dias_uteis(mes, ano, feriados=[]):
         pieces.lib_logging.logger.info(f"[FIM] get_dias_uteis()")
     
 def get_data_inicio_fim(list_horas,dias_uteis,horas,row,saldo,mes,ano):
-    try:
-        pieces.lib_logging.logger.info(f"[INICIO] get_data_inicio_fim()")
-        index = 0
-        dif_horas = 0
-        adicionado_horas = False                 
+    pieces.lib_logging.logger.info(f"[INICIO] get_data_inicio_fim()")
+    index = 0
+    dif_horas = 0
+    adicionado_horas = False
+    try:              
         #verifica diferenca horas por dia    
         dias = horas / 8
         #dias = int(sum(list_horas) / 8)
@@ -115,6 +118,7 @@ def get_data_inicio_fim(list_horas,dias_uteis,horas,row,saldo,mes,ano):
         except Exception as e:
             if str(e) in "list index out of range":                               
                 index = index -1
+                #row = row -1
                 row, saldo = verifica_horas_menores(row=row, dias_uteis=dias_uteis, horas=horas, list_horas=list_horas)
                 data_inicio = dias_uteis[int(row)]
                 data_fim = dias_uteis[row]                
@@ -138,6 +142,7 @@ def dias_fora_do_intervalo_ferias(lista_dias_uteis, dia_inicial, dia_final):
         # Criando um conjunto com os dias úteis no intervalo
         dias_uteis_no_intervalo = set(lista_dias_uteis) & set(range(dia_inicial, dia_final + 1))    
         # Retornando os dias úteis que não estão no intervalo
+
         return sorted(list(set(lista_dias_uteis) - dias_uteis_no_intervalo))
     except Exception as error:
         pieces.lib_logging.logger.error(f" > error message: {error}")
@@ -166,25 +171,24 @@ def get_mes_ano_anterior():
         pieces.lib_logging.logger.info(f"[FIM] get_mes_ano_anterior()")
 
 def verifica_horas_menores(list_horas, dias_uteis, row, horas):
-   try:
-        pieces.lib_logging.logger.info(f"[INICIO] verifica_horas_menores()")
-        print(f"total inicial: {sum(list_horas)}")
-        horas_min = max(list_horas)
-        dic_min_horas = {'index': [], 'horas': []}
-        # procura o valor menor na lista de horas e o indice precisa ser menor que o total de dias uteis
-        for index, h in enumerate(list_horas):
-            if h < horas_min:
-                dic_min_horas['index'].append(index)
-                dic_min_horas['horas'].append(h) 
-        print(f"index: {dic_min_horas['index']}")
-        for indice in dic_min_horas['index']:
-            if indice < sum(dias_uteis):
-                horas_old = list_horas[indice]
-                row = indice
-                horas = horas_old + horas            
-                break
-        return row, horas
-    except Exception as error:
-        pieces.lib_logging.logger.error(f" > error message: {error}")
-    finally:
-        pieces.lib_logging.logger.info(f"[FIM] verifica_horas_menores()")
+    
+    print(f"total inicial: {sum(list_horas)}")
+        
+    horas_min = max(list_horas)
+    dic_min_horas = {'index': [], 'horas': []}
+    # procura o valor menor na lista de horas e o indice precisa ser menor que o total de dias uteis
+    for index, h in enumerate(list_horas):
+        if h < horas_min:
+            dic_min_horas['index'].append(index)
+            dic_min_horas['horas'].append(h) 
+
+    print(f"index: {dic_min_horas['index']}")
+
+    for indice in dic_min_horas['index']:
+        if indice < sum(dias_uteis):
+            horas_old = list_horas[indice]
+            row = indice
+            horas = horas_old + horas            
+            break
+
+    return row, horas

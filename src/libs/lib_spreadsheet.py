@@ -1,11 +1,18 @@
 import pieces
 from gvars import *
+
+"""
+Todos processos de montagem do dataframe para exportacao com resultados
+"""
        
 def coleta_indicadores(dataframe):
     try:
+        
         pieces.lib_logging.logger.info("> INICIO coleta_indicadores()")            
+
         # pega todos coloboradores do dataframe
         lista_colaboradores = dataframe['Nome'].unique()
+
         for item in lista_colaboradores:
             dados_filtrados = dataframe.loc[dataframe['Nome'] == item]
             total_titulos = dados_filtrados['Título'].nunique()
@@ -13,6 +20,7 @@ def coleta_indicadores(dataframe):
                                 
     except Exception as error:
         pieces.lib_logging.logger.error(f"ERRO no coleta_indicadores: message: {error}")
+
     finally:
         pieces.lib_logging.logger.info("> FIM coleta_indicadores()")
         
@@ -32,9 +40,11 @@ def mapear_qtd_funcionarios_projeto(file_path,sheet_name):
     try:
         pieces.lib_logging.logger.info(">[INICIO] mapear_qtd_funcionarios_projeto() ")
         df_funcionarios = pieces.pd.read_excel(file_path, sheet_name=sheet_name)
+
         contagens_por_projeto = {}
         # Agrupando as funcionario por projeto
-        funcao_por_projeto = df_funcionarios.groupby(f'{COLUNA_PROJETO_FUNC}')[f'{COLUNA_FUNCAO}'].apply(list)         
+        funcao_por_projeto = df_funcionarios.groupby(f'{COLUNA_PROJETO_FUNC}')[f'{COLUNA_FUNCAO}'].apply(list) 
+        
         for projeto, funcoes in funcao_por_projeto.items():            
             # Filtrar funcionários por  projeto
             filter_projeto = df_funcionarios[(df_funcionarios[f'{COLUNA_PROJETO_FUNC}'] == projeto)]
@@ -42,11 +52,15 @@ def mapear_qtd_funcionarios_projeto(file_path,sheet_name):
             filter_projeto_sem_nulos = filter_projeto[(filter_projeto[f'{COLUNA_NOME_FUNC}'].notna()) & (filter_projeto[f'{COLUNA_HORAS}'].notna())]            
             # Filtrar funcionários por projeto
             funcionarios_projeto = filter_projeto_sem_nulos[(filter_projeto_sem_nulos[f'{COLUNA_PROJETO_FUNC}'] == projeto)]  
+
             # Agrupar os dados pela coluna 'Funcao' e contar o número de ocorrências de cada função
             contagem_funcoes = funcionarios_projeto[f'{COLUNA_FUNCAO}'].value_counts()
+
             # Adicionar a contagem de funcionários por função ao dicionário
             contagens_por_projeto[projeto] = contagem_funcoes.to_dict()        
-        pieces.lib_logging.logger.info(f"contagens_por_projeto: {contagens_por_projeto}")        
+
+        pieces.lib_logging.logger.info(f"contagens_por_projeto: {contagens_por_projeto}")
+        
         return contagens_por_projeto
 
     except Exception as error:
@@ -73,7 +87,8 @@ def insert_rows_dataframe(dataframe,row_df_modelo,add_total_item,work_itens,tota
         row_data = 0 
         saldo = 0 
 
-        for i in range(int(add_total_item)):   
+        for i in range(int(add_total_item)):  
+        #for i in range(len(dias_uteis)):   
             # Associa horas
             horas = horas_por_work_itens[row_horas]
             lista_horas = horas_por_work_itens
@@ -100,8 +115,6 @@ def insert_rows_dataframe(dataframe,row_df_modelo,add_total_item,work_itens,tota
             while True: 
                 tentativa += 1               
                 work_item = work_itens.sample(n=1).values[0]
-                #remover acentos
-                #work_sem_acento = pieces.lib_process.remover_acentos(work_item)
                 if str(work_item[0]) not in random_itens:
                     random_itens.append(work_item[0])                            
                     break 
@@ -136,15 +149,24 @@ def distribuir_numero(numero, partes):
      # se o numero for que a parte retorna sempre o indice 0
     if numero < partes:
         return partes_distribuidas
+    # Encontra o valor majoritário e o valor das partes restantes
+    #valor_majoritario = quociente
+    #valor_restante = quociente
+    #for valor in partes_distribuidas:
+    #    if valor != quociente:
+    #        valor_restante = valor
+     #       break
     return partes_distribuidas
 
 def distribuir_horas(horas, partes):
     try:
         pieces.lib_logging.logger.info("[INICIO] distribuir_horas()") 
         if partes < 1:
-            raise Exception(f"Numero negativo em partes: {partes}")      
+            raise Exception(f"Numero negativo em partes: {partes}")
+      
         # Inicializa a lista com partes iguais a 8
         distribuicao = [8] * partes
+
         # Verifica se há somente uma parte
         if partes == 1 or horas <= 8 :
             distribuicao = []
@@ -154,11 +176,14 @@ def distribuir_horas(horas, partes):
             distribuicao = []
             horas_distribuidas = horas / partes
             for i in range(partes):
-                distribuicao.append(horas_distribuidas)        
+                distribuicao.append(horas_distribuidas)
+        
         # Calcula a soma inicial das partes
         soma_total = sum(distribuicao)
+
         # Define os múltiplos de 8 a serem adicionados em ordem crescente
         multiplos_de_8 = [8 * i for i in range(1, 26)]
+
         # Verifica se a soma total é menor que o número de horas desejado
         if soma_total < horas:
             # Adiciona partes extras, respeitando o total de partes e o número de horas desejado
@@ -189,6 +214,7 @@ def distribuir_horas(horas, partes):
                 diferenca_horas = horas - soma_total
                 distribuicao.append(diferenca_horas)
                 soma_total = sum(distribuicao)
+
         # ajuste tamanho se necessário
         if len(distribuicao) != partes:
             saldo_partes = partes - partes_total
@@ -246,7 +272,10 @@ def create_plan_modelo(dias_uteis,mes,ano):
             work_filter = df_jira[(df_jira[f'{COLUNA_PROJETO}'] == projeto)]
             #totalizar itens
             total_work_item = work_filter[f'{COLUNA_WORK_ITEM}'].count()
-            try:                                                 
+            try:                                                
+                #work_itens = work_filter[f'{COLUNA_WORK_ITEM}']
+                #work_itens = work_filter[f'{COLUNA_KEY}']                                                
+                #work_filter[f'{COLUNA_KEY}']  
                 if work_filter.empty:
                     pieces.lib_logging.logger.error(f"> Ver projeto: {projeto} esta divergente entre Jira e Base de Funcionários")
                     continue
@@ -265,7 +294,16 @@ def create_plan_modelo(dias_uteis,mes,ano):
                 funcao = row[f'{COLUNA_FUNCAO}']
                 squad = row[f'{COLUNA_SQUAD}']
                 dt_inicio_ferias = row[f'{COLUNA_INICIO}']
-                dt_fim_ferias = row[f'{COLUNA_FIM}']                  
+                dt_fim_ferias = row[f'{COLUNA_FIM}']  
+                
+                
+                if "ISRAEL" in nome:
+                    print("achou")
+                # valida se tem horas para distribuir
+                if horas == 0:
+                    pieces.lib_logging.logger.info(f"> Funcionario {nome} do projeto  não tem horas para distribuir")
+                    continue
+                
                 # valida ferias
                 if not pieces.pd.isnull(dt_inicio_ferias) and not pieces.pd.isnull(horas):
                     ferias = True
@@ -277,6 +315,7 @@ def create_plan_modelo(dias_uteis,mes,ano):
                     lista_erros += result_validation
                     falha = True
                     continue
+             
                 if nome != nome_anterior:
                     row_horas_funcionario = 0
                     #indice = 0
@@ -307,11 +346,14 @@ def create_plan_modelo(dias_uteis,mes,ano):
                 # Se tiver mais funcinario faz divisao por work itens
                     work_item_funcao =  int(total_funcionario_funcao) / int(total_work_item)                                                                   
                 # Trata diferente se o resultado der um numero inteiro
-                if isinstance(work_item_funcao,int):
+                #if isinstance(work_item_funcao,int):
+                if work_item_funcao.is_integer():
                     # divide horas por work itens
                     horas_por_work_itens  = distribuir_horas(horas=int(horas), partes=int(work_item_funcao))
-
-                    add_total_item = work_item_funcao                                                                                
+                    if work_item_funcao > len(dias_uteis):
+                        add_total_item = len(dias_uteis)
+                    else:
+                        add_total_item = work_item_funcao                                                                                
                     pieces.lib_logging.logger.info("""
                                                     Time: {} 
                                                     Nome: {}
@@ -338,7 +380,6 @@ def create_plan_modelo(dias_uteis,mes,ano):
                                                     Total horas:{} 
                                                     Linhas add:{}""".format(projeto,nome,funcao,horas_por_work_itens,horas,add_total_item))                                                                                                   
                 # funcao para adicionar as linhas no dataframe modelo
-                
                 row_df_modelo = insert_rows_dataframe(dataframe=df_modelo,
                                     row_df_modelo=row_df_modelo,
                                     add_total_item=add_total_item,
@@ -357,7 +398,8 @@ def create_plan_modelo(dias_uteis,mes,ano):
                                     fim_ferias = dt_fim_ferias,
                                     ferias = ferias,
                                     projeto = projeto
-                                    )                                                                                            
+                                    )                                                                                     
+       
         # Salva o Excel com resultado
         if not falha:
             pieces.lib_logging.logger.info(f"df modelo: {df_modelo.head()}")
@@ -404,7 +446,8 @@ def formata_df(df):
             df['Project'] = df['Project'].str.replace(palavra, substituicao)
     except Exception as error:
        pieces.lib_logging.logger.error({error}) 
-    finally: 
+    finally:
+        #df.to_excel(PATH_REPORT, index=False) 
         return df
 
 

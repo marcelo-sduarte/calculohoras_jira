@@ -1,5 +1,8 @@
 import pieces
 from gvars import *
+"""
+Funcoes para envio de email
+"""
 def send_email(EmailTo, Subject,Body,Co=None,output_path=None, nameFile=None):
     try:
         pieces.lib_logging.logger.info("[INICIO] send_email()")
@@ -23,6 +26,7 @@ def send_email(EmailTo, Subject,Body,Co=None,output_path=None, nameFile=None):
             pieces.encoders.encode_base64(part)
             part.add_header('Content-Disposition', f'attachment; filename={nameFile}')
             msg.attach(part)
+
         # Conectar ao servidor SMTP
         servidor = pieces.smtplib.SMTP(EMAIL_SMTP, EMAIL_PORT)
         servidor.starttls()
@@ -33,5 +37,6 @@ def send_email(EmailTo, Subject,Body,Co=None,output_path=None, nameFile=None):
         print('Email enviado com sucesso!')  
     except Exception as error:
         pieces.lib_logging.logger.info(f"> send_email error message: {error}")
+    
     finally:
         pieces.lib_logging.logger.info("[FIM] send_email()")
