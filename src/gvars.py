@@ -3,7 +3,6 @@ import pieces
 """
 Aqui consta todos paths e variaveis globais
 """
-
 # environment
 PRD = False
 ENVIO_EMAIL = False
@@ -17,13 +16,11 @@ if PRD:
 else:
     title = 'Executando em modo Homologação'
 
-
-
 # TODAY
 today = pieces.date.today().strftime('%d-%m-%y') 
 
 # paths
-PATH_PROCESS_FOLDER = r"C:\Users\marce\Documents\Python\Automation"+ pieces.os.sep + PROCESS_NAME
+PATH_PROCESS_FOLDER = r"C:\Downloads"+ pieces.os.sep + PROCESS_NAME
 PATH_OUTPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "output"
 PATH_INPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "input"
 PATH_LOGS = PATH_OUTPUT + pieces.os.sep +"logs"
@@ -38,12 +35,12 @@ PATH_REPORT = pieces.os.path.join(PATH_FILES, FILE_OUTPUT_JIRA)
 FILENAME = PATH_LOGS + pieces.os.sep + f"output-{today}.log"
 
 # CONFIG FILE JIRA 
-#PATH_EXCEL_2 = PATH_INPUT + pieces.os.sep + "jira_api_fabio.xlsx"
-PATH_EXCEL_2 = PATH_INPUT + pieces.os.sep + "jira_api.xlsx"
 if API_JIRA:
     SHEET_2 = "Sheet1"
+    PATH_EXCEL_2 = PATH_INPUT + pieces.os.sep + "jira_api.xlsx"
 else:
     SHEET_2 = "Your Jira Issues"
+    PATH_EXCEL_2 = PATH_INPUT + pieces.os.sep + "jira_api_fabio.xlsx
     
 
 COLUNA_PROJETO = 'Project'
@@ -68,7 +65,6 @@ SATURDAY = 5
 SUNDAY = 6
 DAYS_WEEK = [SATURDAY, SUNDAY]
 
-
 # URLS
 # endpoint homologacao ANBIMA
 HMG_ANBIMA = "https://privateservices-stg.vortx.com.br/vxferiados/api/Holiday/GetInRange?"
@@ -88,10 +84,6 @@ COLUMNS_BASE =[
 ]
 
 COLUMNS_PLAN_MODELO = ["Squad","Projeto","Título","Função","Nome","Inicio","Fim","Qtd Horas"]
-
-
-
-
 
 # Hoje string formato dd/mm/yyyy
 HOJE_DATA = pieces.date.today().strftime('%d-%m-%y') 
@@ -120,8 +112,6 @@ EMAIL_TARGET = "email_cadmus"
 # CONF EMAIL
 EMAIL_SMTP = "email-ssl.com.br"
 EMAIL_PORT = 587
-#EMAIL_INTERNO = "marcelo.duarte@cadmus.com.br,vinicius.cortez@cadmus.com.br"
-#EMAIL_CLIENT = "fsh@vortx.com.br"
 EMAIL_CLIENT = "marcelo.duarte@cadmus.com.br"
 EMAIL_SUPPORT = "marcelo.duarte@cadmus.com.br"
 EMAIL_INTERNO = "marcelo.duarte@cadmus.com.br"
