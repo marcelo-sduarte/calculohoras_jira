@@ -9,7 +9,7 @@ ENVIO_EMAIL = False
 API_JIRA = False
 
 # PROCESS
-PROCESS_NAME = "CALCULOSHORAS_JIRA"
+PROCESS_NAME = "calculohoras_jira"
 
 if PRD:
     title = 'Executando em modo Produção'
@@ -20,11 +20,11 @@ else:
 today = pieces.date.today().strftime('%d-%m-%y') 
 
 # paths
-PATH_PROCESS_FOLDER = r"C:\Downloads"+ pieces.os.sep + PROCESS_NAME
-PATH_OUTPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "output"
-PATH_INPUT = PATH_PROCESS_FOLDER + pieces.os.sep + "input"
-PATH_LOGS = PATH_OUTPUT + pieces.os.sep +"logs"
-PATH_FILES = PATH_OUTPUT + pieces.os.sep +"files"
+PATH_PROCESS_FOLDER = pieces.os.path.join(r"C:\Downloads",PROCESS_NAME)
+PATH_OUTPUT = pieces.os.path.join(PATH_PROCESS_FOLDER,"output")
+PATH_INPUT = pieces.os.path.join(PATH_PROCESS_FOLDER,"input")
+PATH_LOGS = pieces.os.path.join(PATH_OUTPUT ,"logs")
+PATH_FILES = pieces.os.path.join(PATH_OUTPUT,"files")
 
 # Nome do File de exportacao
 FILE_OUTPUT_JIRA = "export.xlsx"
