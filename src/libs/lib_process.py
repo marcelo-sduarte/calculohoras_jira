@@ -6,13 +6,13 @@ Todos processos para validar framework da automacao
 
 def verify_structure():
     try:
-        if not pieces.os.path.exists(PATH_INPUT):
+        if not pieces.os.path.isdir(PATH_INPUT):
             pieces.os.mkdir(PATH_INPUT)
-        if not pieces.os.path.exists(PATH_OUTPUT):
-            pieces.os.mkdir(PATH_OUTPUT)
-        if not pieces.os.path.exists(PATH_LOGS):
-            pieces.os.mkdir(PATH_LOGS)
-        if not pieces.os.path.exists(PATH_FILES):
+        if not pieces.os.path.isdir(PATH_OUTPUT):
+            pieces.os.makedirs(PATH_OUTPUT)
+        if not pieces.os.path.isdir(PATH_LOGS):
+            pieces.os.makedirs(PATH_LOGS)
+        if not pieces.os.path.isdir(PATH_FILES):
             pieces.os.mkdir(PATH_FILES)    
     except Exception as error:
         print(error)
